@@ -108,9 +108,24 @@ Resources:
     Type: 'AWS::S3::Bucket'
     Properties:
       BucketName: bucket-arcos-balboa-lab16
+      AccessControl: PublicRead
       Tags:
         - Key: Name
           Value: MyS3Bucket
+  
+  S3BucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      Bucket: !Ref S3Bucket
+      PolicyDocument:
+        Statement:
+          - Sid: PublicReadGetObject
+            Effect: Allow
+            Principal: '*'
+            Action:
+              - 's3:GetObject'
+            Resource: !Sub 'arn:aws:s3:::${S3Bucket}/*'
+
 Outputs: 
   InstanceID:
     Description: Instance ID
